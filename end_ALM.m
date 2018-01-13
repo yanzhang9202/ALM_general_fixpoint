@@ -1,0 +1,1 @@
+rmpath(genpath('/Users/Yan_Zhang/Documents/MATLAB/Optimization/ALM_general_fixpoint')); 

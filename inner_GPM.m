@@ -1,0 +1,67 @@
+function [sol, err, flag] = inner_GPM(lambda, data, GPMparam, FPparam)
+global verbose prob_type
+stopcriter = GPMparam.stopcriter;  % 1 - stop by criteria, 2 - stop by iter number
+iter_max = GPMparam.iter_max;
+epsilon = GPMparam.epsilon;
+alpha = GPMparam.alpha;
+sol_type = GPMparam.sol_type;
+% Initialize a starting point
+x = fi(zeros(data.N, 1), FPparam.T, FPparam.F);   % Need to be feasible
+x_prev = x;
+err = 0;
+if sol_type == 2
+    x_avg = double(x);
+end
+flag = 1;   % 1 - success, 2 - fail
+
+if strcmp(prob_type, 'mpc')
+    M3 = data.M3;
+    M4 = data.M4;
+    M5 = data.M5;
+end
+
+for k = 1 : iter_max
+    x_prev = x;
+    
+    switch prob_type
+        case 'waterfilling'
+            g = calc_grad(x, data, lambda);
+            x = x_prev - alpha*g;
+            
+        case 'mpc'
+            x = x_prev - M3*x_prev - M4*lambda + M5;
+        otherwise
+            error('Error:In GPM, undefined step!');
+    end
+    
+    x = calc_proj(x, data.lb, data.ub);
+    if sol_type == 2
+        x_avg = (x_avg*k + double(x))/(k+1);
+    end
+    if stopcriter == 1
+        if norm(x - x_prev) < epsilon
+            flag = 1;
+            break;
+        end
+    end
+end
+if stopcriter == 1
+    err = norm(x - x_prev);
+    if err > epsilon
+        flag = 2;
+    end
+end
+if sol_type == 1
+    sol = x;
+else if sol_type == 2
+        sol = fi(x_avg, FPparam.T, FPparam.F);
+    else
+        error('Error: Undefined solution type in GPM!')
+    end
+end
+if verbose
+    if flag == 2
+        fprintf('Warning:GPM may not return optimal solution!\n');
+    end
+end
+end
