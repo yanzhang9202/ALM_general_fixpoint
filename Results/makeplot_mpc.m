@@ -10,9 +10,9 @@ clear H
 Aeq = double(data.Aeq);
 beq = double(data.beq);
 vec = Aeq*var.x_avg - repmat(beq,1,size(var.x_avg,2));
-feas_avg = diag(vec'*vec);
+feas_avg = sqrt(diag(vec'*vec))/P2;
 vec = Aeq*var.x - repmat(beq,1,size(var.x,2));
-feas_iter = diag(vec'*vec);
+feas_iter = sqrt(diag(vec'*vec))/P2;
 clear Aeq beq vec
 
 E = alpha*ALMparam.epsilon;

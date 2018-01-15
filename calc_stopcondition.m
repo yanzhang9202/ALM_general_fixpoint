@@ -14,6 +14,7 @@ switch prob_type
         GPMparam.delta1 = fi(delta1, T, F);
         sigma = min(svd(H + rho*A'*A));
         delta2 = sqrt(sigma*B_in/2/n/Lp) - delta1;
+%         delta2 = delta2/2;
         if delta2 <= 0
             GPMparam.delta2 = 0;
             fprintf('Warning: No stopping criteria applied!\n')

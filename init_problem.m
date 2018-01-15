@@ -21,10 +21,10 @@ switch prob_type
         
     case 'mpc'
         % Scaling
-%         P1 = 1;    % Scale on objective
-        P1 = 2^(-4);
-        P2 = 1;   % Scale on Aeq and beq
-%         P2 = 2^4;
+        P1 = 1;    % Scale on objective
+%         P1 = 2^(-4);
+%         P2 = 1;   % Scale on Aeq and beq
+        P2 = 2^4;
 
         main_pf_mpc;
         % Solve the problem using Matlab QP function
