@@ -21,5 +21,9 @@ switch prob_type
             GPMparam.delta2 = fi(delta2, T, F);
         end
         
+        if delta2 < delta1
+            fprintf('Warning: delta2 < delta1, stopping criteria is never satisfied!')
+        end
+        
         clear n H A rho Lp T F delta1 sigma delta2
 end

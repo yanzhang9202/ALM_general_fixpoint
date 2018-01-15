@@ -1,6 +1,6 @@
 switch ALMparam.inner_solver
     case 'GPM'
-        GPMparam.stopcriter = 2; % 1 - stop by criteria, 2 - stop by iter number
+        GPMparam.stopcriter = 3; % 1 - stop by criteria, 2 - stop by iter number, 3 - stop by embedded criteria
         GPMparam.iter_max = 1e3;
         GPMparam.epsilon = 1e-6;
         GPMparam.sol_type = 2; % 1 - direct iterate, 2 - ergodic average

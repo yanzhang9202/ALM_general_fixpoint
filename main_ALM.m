@@ -2,7 +2,7 @@
 clear
 close all
 % clc
-global prob_type ALMparam verbose
+global prob_type ALMparam verbose gpmverbose
 
 %% Initialization
 % prob_type = 'waterfilling';
@@ -12,6 +12,7 @@ init_param_ALM;
 
 %% Display setting
 verbose = 0;
+gpmverbose = 0;
 do_proj_multiplier = 1;
 
 %% Run ALM
