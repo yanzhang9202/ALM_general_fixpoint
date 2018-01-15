@@ -19,6 +19,9 @@ beta = 0.5;
 gamma = 100;
 calc_FPparam_V2;
 
+%% Decide stopping criteria for inner solver
+calc_stopcondition;
+
 %% Assign variable space
 % var_fp.x = fi(zeros(data.N, ALMparam.iter_max), FPparam.T, FPparam.F);
 var.x_avg = zeros(data.N, ALMparam.iter_max);

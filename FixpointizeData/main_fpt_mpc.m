@@ -95,5 +95,5 @@ FPparam.fl = fl;    FPparam.wl = wl;
 FPparam.T = T;  FPparam.F = F;
 FPparam.E = alpha*epsilon;
 
-clear rho bd_lambda Lp Bx C1 C2 C3 U1 U2 U3 B_lambda B_out ...
-    B_in n A b bd_1_fl bd_2_fl epsilon M3 M4 M5 lb ub D
+clear rho bd_lambda Lp Bx C1 C2 C3 U1 U3 B_lambda B_out ...
+     n A b bd_1_fl bd_2_fl epsilon M3 M4 M5 lb ub D

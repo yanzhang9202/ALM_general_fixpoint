@@ -1,0 +1,13 @@
+switch prob_type
+    case 'waterfilling'
+        
+    case 'mpc'
+        n = data.N;
+        H = double(data.H);
+        A = double(data.Aeq);
+        rho = double(ALMparam.rho);
+        Lp = GPMparam.L;
+        
+        delta1 = U2/Lp/sqrt(n);
+        sigma = min(svd(H + rho*A'*A))
+end
