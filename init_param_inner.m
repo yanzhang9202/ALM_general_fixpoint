@@ -3,7 +3,7 @@ switch ALMparam.inner_solver
         GPMparam.stopcriter = 3; % 1 - stop by criteria, 2 - stop by iter number, 3 - stop by embedded criteria
         GPMparam.iter_max = 1e3;
         GPMparam.epsilon = 1e-6;
-        GPMparam.sol_type = 2; % 1 - direct iterate, 2 - ergodic average
+        GPMparam.sol_type = 1; % 1 - direct iterate, 2 - ergodic average
         switch prob_type
             case 'waterfilling'
                 Hess = ALMparam.rho*ones(data.N) + diag(1./(double(data.a).^2));   % Hessian of the objective function
