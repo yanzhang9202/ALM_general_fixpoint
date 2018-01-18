@@ -57,26 +57,21 @@ for k = 1 : iter_max
             case 'mpc'
                 if sol_type == 1
                     g = M3*x + M4*lambda - M5;
-%                     ind_lb = find(x==data.lb);
-%                     ind_ub = find(x==data.ub);
+                    ind_lb = find(x==data.lb);
+                    ind_ub = find(x==data.ub);
                 else if sol_type == 2
                         g = M3*fi(x_avg, FPparam.T, FPparam.F) + M4*lambda - M5;
-%                         ind_lb = find(x_avg==data.lb);
-%                         ind_ub = find(x_avg==data.ub);
+                        ind_lb = find(x_avg==data.lb);
+                        ind_ub = find(x_avg==data.ub);
                     end
                 end
         end
         
-%         exitflag = check_stopcriter(double(g), ind_lb, ind_ub, double(delta1), double(delta2));
+        exitflag = check_stopcriter(double(g), ind_lb, ind_ub, double(delta1), double(delta2));
         
         if sol_type == 1
             exitflag = check_stopcriter_V2(double(x), double(data.lb), ...
-                double(data.ub), double(g), double(delta1), double(delta2));
-        else if sol_type == 2
-                exitflag = check_stopcriter_V2(x_avg, double(data.lb), ...
-                double(data.ub), double(g), double(delta1), double(delta2));
-            end
-        end
+                double(data.ub), g, )
         
         if exitflag
             if gpmverbose

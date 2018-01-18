@@ -74,10 +74,10 @@ toc
 makeplot;
 
 %% Save results
-filename = 'MPC_ws_eps1e-2_fl28wl33_P1_1_P2_2e4_011718.mat';
-% save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
-%     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
-save(filename);  % For satefy
+% filename = 'MPC_ws_eps1e-2_fl28wl33_P1_1_P2_2e4_011718.mat';
+% % save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
+% %     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
+% save(filename);  % For satefy
 
 %% End the code
 end_ALM;
