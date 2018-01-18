@@ -55,11 +55,17 @@ C(2) = L/2*(D+2*bd_lambda)^2 + 1/2*(D+bd_lambda)^2;
 C(3) = L/2*(D+bd_lambda+1)^2 + 1/2*(D+bd_lambda)^2;
 clear D
 
-if (fl < PreFPparam.fl || wl < PreFPparam.wl)
-   fprintf(['Warning: The required fl and wl are shorter than the ones',...
+if fl < PreFPparam.fl
+   fprintf(['Warning: The required fl are shorter than the ones',...
    'required for representing the problem!\n']);
     fl = PreFPparam.fl;
     wl = PreFPparam.wl;
+end
+
+if (wl-fl) < (PreFPparam.wl-PreFPparam.fl)
+    fprintf(['Warning: The required wl are shorter than the ones',...
+   'required for representing the problem!\n']);
+   wl = fl + (PreFPparam.wl - PreFPparam.fl);
 end
 
 % Test fixed point parameters:
@@ -76,7 +82,7 @@ GPMparam.alpha = fi(GPMparam.alpha, T, F);
 GPMparam.iter_max = Ki;
 ALMparam.rho = fi(ALMparam.rho, T, F);
 ALMparam.iter_max = Ko;
-data.H = fi(data.H, T, F);
+data.H = fi(double(data.H), T, F);
 data.f = fi(data.f, T, F);
 data.Aeq = fi(data.Aeq, T, F);
 data.beq = fi(data.beq, T, F);
@@ -95,5 +101,5 @@ FPparam.fl = fl;    FPparam.wl = wl;
 FPparam.T = T;  FPparam.F = F;
 FPparam.E = alpha*epsilon;
 
-clear rho bd_lambda Lp Bx C1 C2 C3 U1 U2 U3 B_lambda B_out ...
-    B_in n A b bd_1_fl bd_2_fl epsilon M3 M4 M5 lb ub D
+clear rho bd_lambda Lp Bx C1 C2 C3 U1 U3 B_lambda B_out ...
+     n A b bd_1_fl bd_2_fl epsilon M3 M4 M5 lb ub D

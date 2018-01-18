@@ -1,10 +1,14 @@
 function [sol, err, flag] = inner_GPM(lambda, data, GPMparam, FPparam)
-global verbose prob_type
+global verbose prob_type gpmverbose
 stopcriter = GPMparam.stopcriter;  % 1 - stop by criteria, 2 - stop by iter number
 iter_max = GPMparam.iter_max;
 epsilon = GPMparam.epsilon;
 alpha = GPMparam.alpha;
 sol_type = GPMparam.sol_type;
+
+delta1 = GPMparam.delta1;
+delta2 = GPMparam.delta2;
+
 % Initialize a starting point
 x = fi(zeros(data.N, 1), FPparam.T, FPparam.F);   % Need to be feasible
 x_prev = x;
@@ -38,19 +42,48 @@ for k = 1 : iter_max
     if sol_type == 2
         x_avg = (x_avg*k + double(x))/(k+1);
     end
+    % Check stopping criteria
     if stopcriter == 1
         if norm(x - x_prev) < epsilon
             flag = 1;
             break;
         end
     end
+    
+    if stopcriter == 3
+        switch prob_type
+            case 'waterfilling'
+                
+            case 'mpc'
+                if sol_type == 1
+                    g = M3*x + M4*lambda - M5;
+                    ind_lb = find(x==data.lb);
+                    ind_ub = find(x==data.ub);
+                else if sol_type == 2
+                        g = M3*fi(x_avg, FPparam.T, FPparam.F) + M4*lambda - M5;
+                        ind_lb = find(x_avg==data.lb);
+                        ind_ub = find(x_avg==data.ub);
+                    end
+                end
+        end
+        exitflag = check_stopcriter(double(g), ind_lb, ind_ub, double(delta1), double(delta2));
+        if exitflag
+            if gpmverbose
+                fprintf(['GPM stops after ', num2str(k), ' iterations!\n']);
+            end
+            break;
+        end
+    end
+    
 end
+
 if stopcriter == 1
     err = norm(x - x_prev);
     if err > epsilon
         flag = 2;
     end
 end
+
 if sol_type == 1
     sol = x;
 else if sol_type == 2
@@ -59,9 +92,11 @@ else if sol_type == 2
         error('Error: Undefined solution type in GPM!')
     end
 end
+
 if verbose
     if flag == 2
         fprintf('Warning:GPM may not return optimal solution!\n');
     end
 end
+
 end

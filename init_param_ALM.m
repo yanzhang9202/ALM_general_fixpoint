@@ -5,7 +5,7 @@ ALMparam.inner_solver = 'GPM';
 ALMparam.stopcriter = 2;   % 1 - stop by criteria, 2 - stop by iter number
 
 % ALMparam.epsilon = 1e0;   % 1 - \|Axk - b\|, 2 - user specified accuracy
-ALMparam.epsilon = 1e-0 * P1;    % target epsilon * scaling factor
+ALMparam.epsilon = 1e-2 * P1;    % target epsilon * scaling factor
 
 ALMparam.exitflag = 0;  % 0 - fail, 1 - success
 ALMparam.L = 2/ALMparam.rho;
@@ -18,6 +18,9 @@ alpha = 0.5;
 beta = 0.5;
 gamma = 100;
 calc_FPparam_V2;
+
+%% Decide stopping criteria for inner solver
+calc_stopcondition;
 
 %% Assign variable space
 % var_fp.x = fi(zeros(data.N, ALMparam.iter_max), FPparam.T, FPparam.F);
