@@ -23,7 +23,10 @@ switch prob_type
             fprintf('Warning: delta2 < delta1, stopping criteria is never satisfied!')
         end
         
-        clear n a b Lp T F delta1 delta 2 sigma B_in U2
+        delta3 = sqrt(sigma*B_in/2/Lp) - delta1*sqrt(n);
+        GPMparam.delta3 = fi(delta3, T, F);
+        
+        clear n a b Lp T F delta1 delta2 sigma B_in U2 delta3
         
     case 'mpc'
         n = data.N;
@@ -50,5 +53,8 @@ switch prob_type
             fprintf('Warning: delta2 < delta1, stopping criteria is never satisfied!')
         end
         
-        clear n H A rho Lp T F delta1 sigma delta2 B_in U2
+        delta3 = 0; % Unused in the MPC problem
+        GPMparam.delta3 = fi(delta3, T, F);
+        
+        clear n H A rho Lp T F delta1 sigma delta2 B_in U2 delta3
 end

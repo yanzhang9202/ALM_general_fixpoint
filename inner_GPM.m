@@ -8,6 +8,7 @@ sol_type = GPMparam.sol_type;
 
 delta1 = GPMparam.delta1;
 delta2 = GPMparam.delta2;
+delta3 = GPMparam.delta3;
 
 % Initialize a starting point
 x = fi(zeros(data.N, 1), FPparam.T, FPparam.F);   % Need to be feasible
@@ -110,6 +111,37 @@ for k = 1 : iter_max
             end
             break;
         end
+    end
+    
+    if stopcriter == 4
+        switch prob_type
+            case 'waterfilling'
+                if sol_type == 1
+                    g = - M3 * (1./(data.a + x)) + M3 * lambda ...
+                + M4 * sum(x) - M4;
+%                     ind_lb = find(x==data.lb);
+%                     ind_ub = find(x==data.ub);
+                else if sol_type == 2
+                        g = - M3 * (1./(data.a + fi(x_avg, FPparam.T, FPparam.F)))...
+                            + M3 * lambda + M4 * sum(fi(x_avg, FPparam.T, FPparam.F)) - M4;
+%                         ind_lb = find(x_avg==data.lb);
+%                         ind_ub = find(x_avg==data.ub);
+                    end
+                end
+                
+            case 'mpc'
+                if sol_type == 1
+                    g = M3*x + M4*lambda - M5;
+%                     ind_lb = find(x==data.lb);
+%                     ind_ub = find(x==data.ub);
+                else if sol_type == 2
+                        g = M3*fi(x_avg, FPparam.T, FPparam.F) + M4*lambda - M5;
+%                         ind_lb = find(x_avg==data.lb);
+%                         ind_ub = find(x_avg==data.ub);
+                    end
+                end
+        end        
+    % Unfinished, check the norm of the gradient smaller than delta3            
     end
     
 end

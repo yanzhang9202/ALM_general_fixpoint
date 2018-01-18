@@ -12,7 +12,7 @@ init_param_ALM;
 
 %% Display setting
 verbose = 0;
-gpmverbose = 1;
+gpmverbose = 0;
 do_proj_multiplier = 1;
 
 %% Run ALM
@@ -78,10 +78,10 @@ toc
 makeplot;
 
 %% Save results
-% filename = 'WF_ws_eps1e-0_fl15wl19_P1_1_P2_2_011718.mat';
-% % save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
-% %     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
-% save(filename);  % For satefy
+filename = 'WF_ws_eps1e-3_011718.mat';
+% save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
+%     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
+save(filename);  % For satefy
 
 %% End the code
 % end_ALM;
