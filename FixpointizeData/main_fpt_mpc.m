@@ -1,5 +1,5 @@
 rho = ALMparam.rho;
-L = 2/rho;
+L = ALMparam.L;
 C1 = L/2*max([(4*bd_lambda)^2, (3*bd_lambda+1)^2, (2*bd_lambda + 2)^2]) + ...
     1/2*max([9*bd_lambda^2, (2*bd_lambda + 1)^2]);
 

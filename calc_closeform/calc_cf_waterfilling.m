@@ -1,4 +1,5 @@
 %% Use the closed form solution in Example 5.2 in "Convex
+global P2
 %% Optimization" by S.Boyd
 a = obj.a; N = obj.N; pw = obj.pw;
 % Change fixpoint data back to double floating point data
@@ -43,7 +44,7 @@ v = nu - a;
 x = zeros(N,1);
 x(v >= 0) = v(v>=0);
 sol.x = x;
-sol.lambda = nu;
+sol.lambda = nu/P2;
 % sol = zeros(N,1);
 % sol(v>=0) = v(v>=0);
 

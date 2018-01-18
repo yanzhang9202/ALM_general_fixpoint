@@ -5,6 +5,12 @@ addpath(genpath('/Users/Yan_Zhang/Documents/MATLAB/Optimization/ALM_general_fixp
 rng(1); % Set random generator seed
 switch prob_type
     case 'waterfilling'
+        % Scaling
+        P1 = 1;    % Scale on objective
+%         P1 = 2^(-4);
+        P2 = 2;   % Scale on Aeq and beq
+%         P2 = 2^4;
+        
         % Example 5.2 in "Convex Optimization" by S.Boyd
         data.N = 10; % # of channels, or dimension of decision variables
         data.m = 1;  % Number of equality constraint
@@ -12,8 +18,8 @@ switch prob_type
         data.pw = 1; % Total power, RHS of the equality constraint        
         data.lb = zeros(data.N,1);  % All decision variables >= 0
         data.ub = data.pw*ones(data.N,1);
-        data.b = data.pw;
-        data.A = ones(1,data.N);
+        data.b = data.pw * P2;
+        data.A = ones(1,data.N) * P2;
         fl = 5;
         [data, PreFPparam] = pre_fixpointize(data,fl);
         % Solve the problem using the closed form solution in the textbook

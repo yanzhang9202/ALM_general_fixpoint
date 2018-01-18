@@ -18,19 +18,33 @@ if sol_type == 2
 end
 flag = 1;   % 1 - success, 2 - fail
 
-if strcmp(prob_type, 'mpc')
-    M3 = data.M3;
-    M4 = data.M4;
-    M5 = data.M5;
+% if strcmp(prob_type, 'mpc')
+%     M3 = data.M3;
+%     M4 = data.M4;
+%     M5 = data.M5;
+% end
+
+switch prob_type
+    case 'waterfilling'
+        M3 = data.M3;
+        M4 = data.M4;
+        
+    case 'mpc'
+        M3 = data.M3;
+        M4 = data.M4;
+        M5 = data.M5;
 end
+   
 
 for k = 1 : iter_max
     x_prev = x;
     
     switch prob_type
         case 'waterfilling'
-            g = calc_grad(x, data, lambda);
-            x = x_prev - alpha*g;
+%             g = calc_grad(x, data, lambda);
+%             x = x_prev - alpha*g;
+            x = x_prev + M3 * (1./(data.a + x_prev)) - M3 * lambda ...
+                - M4 * sum(x_prev) + M4;
             
         case 'mpc'
             x = x_prev - M3*x_prev - M4*lambda + M5;
@@ -53,6 +67,18 @@ for k = 1 : iter_max
     if stopcriter == 3
         switch prob_type
             case 'waterfilling'
+                if sol_type == 1
+                    g = - M3 * (1./(data.a + x)) + M3 * lambda ...
+                + M4 * sum(x) - M4;
+%                     ind_lb = find(x==data.lb);
+%                     ind_ub = find(x==data.ub);
+                else if sol_type == 2
+                        g = - M3 * (1./(data.a + fi(x_avg, FPparam.T, FPparam.F)))...
+                            + M3 * lambda + M4 * sum(fi(x_avg, FPparam.T, FPparam.F)) - M4;
+%                         ind_lb = find(x_avg==data.lb);
+%                         ind_ub = find(x_avg==data.ub);
+                    end
+                end
                 
             case 'mpc'
                 if sol_type == 1
