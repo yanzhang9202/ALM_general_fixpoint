@@ -40,7 +40,11 @@ while((bh - bl) > 1e-15)
 end
 nu = bm;    % This is the optimal multiplier
 v = nu - a;
-sol = zeros(N,1);
-sol(v>=0) = v(v>=0);
+x = zeros(N,1);
+x(v >= 0) = v(v>=0);
+sol.x = x;
+sol.lambda = nu;
+% sol = zeros(N,1);
+% sol(v>=0) = v(v>=0);
 
 
