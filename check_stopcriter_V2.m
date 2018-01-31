@@ -13,23 +13,24 @@ for i = 1 : length(x)
                 end
             end
         end
-    end                    
-    if x(i) == ub(i)    % active at upper bound
-        if g(i) > delta1   % Violate the optimality condition
-            flag = 0;
-            break;
-        else if g(i) > -delta1   % Cannot differentiate
-                if abs(g(i)) >  delta2
-                    flag = 0;
-                    break
+        
+    else if x(i) == ub(i)    % active at upper bound
+            if g(i) > delta1   % Violate the optimality condition
+                flag = 0;
+                break;
+            else if g(i) > -delta1   % Cannot differentiate
+                    if abs(g(i)) >  delta2
+                        flag = 0;
+                        break
+                    end
                 end
             end
+            
+        else if abs(g(i)) > delta2  % For inactive constraints 
+                flag = 0;
+                break
+             end
         end
     end
-    % For inactive constraints
-    if abs(g(i)) > delta2
-        flag = 0;
-        break
-    end  
 end
 end

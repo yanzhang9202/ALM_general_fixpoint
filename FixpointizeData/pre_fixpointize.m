@@ -21,6 +21,7 @@ switch prob_type
         data.A = fi(data.A, T, F);
         % Output Fixpoint parameter
         FPparam.fl = fl;    FPparam.wl = wl;
+        FPparam.T = T; FPparam.F = F;        
         
     case 'mpc'
         H = data.H;

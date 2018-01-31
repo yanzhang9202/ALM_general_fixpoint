@@ -1,6 +1,8 @@
 switch ALMparam.inner_solver
     case 'GPM'
         GPMparam.stopcriter = 3; % 1 - stop by criteria, 2 - stop by iter number, 3 - stop by embedded criteria
+                                 % 4 - stop by embedded criteria but with
+                                 % exact norm calculation (wf problem)
         GPMparam.iter_max = 1e3;
         GPMparam.epsilon = 1e-6;
         GPMparam.sol_type = 1; % 1 - direct iterate, 2 - ergodic average
@@ -12,7 +14,26 @@ switch ALMparam.inner_solver
                 end
                 GPMparam.L = max(eig(Hess));
                 GPMparam.alpha = 1/GPMparam.L;
-                clear Hess;
+                
+                rho = ALMparam.rho;
+                Aeq = double(data.A);
+                beq = double(data.b);
+                L = ALMparam.L;
+                
+                fl = PreFPparam.fl;
+                wl = PreFPparam.wl;
+                init_fixpoint_param;                
+                M1 = Aeq/L;
+                M2 = beq/L;
+                M3 = GPMparam.alpha;
+                M4 = GPMparam.alpha*rho;
+                
+                data.M1 = fi(M1, T, F);
+                data.M2 = fi(M2, T, F);
+                data.M3 = fi(M3, T, F);
+                data.M4 = fi(M4, T, F);
+                
+                clear Hess M1 M2 M3 M4 Aeq beq rho fl wl L 
                 
             case 'mpc'
                 H = double(data.H);
@@ -37,7 +58,7 @@ switch ALMparam.inner_solver
                 data.M4 = fi(M4, T, F);
                 data.M5 = fi(M5, T, F);
                 
-                clear H Aeq rho fl wl M1 M2 M3 M4 M5;
+                clear H Aeq beq rho fl wl M1 M2 M3 M4 M5 L
                 
             otherwise
                 error('Error:Undefined GPM step size for the problem type!')

@@ -5,8 +5,8 @@ close all
 global prob_type ALMparam verbose gpmverbose
 
 %% Initialization
-% prob_type = 'waterfilling';
-prob_type = 'mpc';
+prob_type = 'waterfilling';
+% prob_type = 'mpc';
 init_problem;       % Now initial the problem with fixed point data
 init_param_ALM;
 
@@ -18,14 +18,15 @@ do_proj_multiplier = 1;
 %% Run ALM
 tic
 count = 0;
+inn_iter = zeros(Ko, 1);
 for k = 1 : ALMparam.iter_max
    % Solve inner problem
    switch prob_type
        case 'waterfilling'
-           [x_iter, err(k), GPMflag(k)] = inner_GPM(lambda_iter,data,GPMparam, FPparam);
+           [x_iter, err(k), GPMflag(k), inn_iter(k)] = inner_GPM(lambda_iter,data,GPMparam, FPparam);
        case 'mpc'
 %            [var_fp.x(:,k), err(k), GPMflag(k)] = inner_GPM(var_fp.lambda(:,k),data,GPMparam, FPparam);
-           [x_iter, err(k), GPMflag(k)] = inner_GPM(lambda_iter, data, GPMparam, FPparam);
+           [x_iter, err(k), GPMflag(k), inn_iter(k)] = inner_GPM(lambda_iter, data, GPMparam, FPparam);
        otherwise
            error('Error: Undefined solution method for the inner problem!')
    end
@@ -54,7 +55,11 @@ for k = 1 : ALMparam.iter_max
    lambda_prev = lambda_iter;
    switch prob_type
        case 'waterfilling'
-            lambda_iter(:,k+1) = lambda_prev + ALMparam.rho/2*(data.A*x_iter-data.b);
+%             lambda_iter(:,k+1) = lambda_prev + ALMparam.rho/2*(data.A*x_iter-data.b);
+            lambda_iter = lambda_prev + data.M1 * x_iter - data.M2;
+            if do_proj_multiplier
+                lambda_iter = calc_proj(lambda_iter, data.lb_lambda, data.ub_lambda);
+            end
             
        case 'mpc'
             lambda_iter = lambda_prev + data.M1 * x_iter - data.M2;
@@ -74,10 +79,10 @@ toc
 makeplot;
 
 %% Save results
-% filename = 'MPC_ws_eps1e-2_fl28wl33_P1_1_P2_2e4_011718.mat';
-% % save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
-% %     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
-% save(filename);  % For satefy
+filename = 'WF_ws_eps1e-3_011723.mat';
+% save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
+%     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
+save(filename);  % For satefy
 
 %% End the code
-end_ALM;
+% end_ALM;

@@ -36,7 +36,8 @@ set(gca, 'FontSize', 15);
 % create a new pair of axes inside current figure
 axes('position',[.35 .175 .45 .3])
 box on % put box around new pair of axes
-indexOfInterest = [(Ko-10) : Ko]; % range of t near perturbation
+rg = max(10, round(Ko/10));
+indexOfInterest = [(Ko-rg) : Ko]; % range of t near perturbation
 hold on;
 plot(indexOfInterest, fval_iter(indexOfInterest) - fstar, 'm-'); % plot on new axes
 plot(indexOfInterest, fval_avg(indexOfInterest) - fstar, 'r-'); % plot on new axes
@@ -62,7 +63,8 @@ set(gca, 'FontSize', 15)
 % create a new pair of axes inside current figure
 axes('position',[.35 .35 .45 .3])
 box on % put box around new pair of axes
-indexOfInterest = [(Ko-10) : Ko]; % range of t near perturbation
+rg = max(10, round(Ko/10));
+indexOfInterest = [(Ko-rg) : Ko]; % range of t near perturbation
 hold on;
 plot(indexOfInterest, feas_iter(indexOfInterest), 'm-'); % plot on new axes
 plot(indexOfInterest, feas_avg(indexOfInterest), 'r-'); % plot on new axes

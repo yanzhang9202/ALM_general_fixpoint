@@ -1,11 +1,11 @@
 %% Set algorithm parameters for ALM
 ALMparam.rho = 1;
-ALMparam.iter_max = 1e3;
+ALMparam.iter_max = 1e3;    % May be changed to the iteration complexity result
 ALMparam.inner_solver = 'GPM';
 ALMparam.stopcriter = 2;   % 1 - stop by criteria, 2 - stop by iter number
 
 % ALMparam.epsilon = 1e0;   % 1 - \|Axk - b\|, 2 - user specified accuracy
-ALMparam.epsilon = 1e-1 * P1;    % target epsilon * scaling factor
+ALMparam.epsilon = 1e-3 * P1;    % target epsilon * scaling factor
 
 ALMparam.exitflag = 0;  % 0 - fail, 1 - success
 ALMparam.L = 2/ALMparam.rho;
