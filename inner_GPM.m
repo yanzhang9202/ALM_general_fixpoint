@@ -1,4 +1,4 @@
-function [sol, err, flag] = inner_GPM(lambda, data, GPMparam, FPparam)
+function [sol, err, flag, k] = inner_GPM(lambda, data, GPMparam, FPparam)
 global verbose prob_type gpmverbose
 stopcriter = GPMparam.stopcriter;  % 1 - stop by criteria, 2 - stop by iter number
 iter_max = GPMparam.iter_max;

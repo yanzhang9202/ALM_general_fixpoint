@@ -18,14 +18,15 @@ do_proj_multiplier = 1;
 %% Run ALM
 tic
 count = 0;
+inn_iter = zeros(Ko, 1);
 for k = 1 : ALMparam.iter_max
    % Solve inner problem
    switch prob_type
        case 'waterfilling'
-           [x_iter, err(k), GPMflag(k)] = inner_GPM(lambda_iter,data,GPMparam, FPparam);
+           [x_iter, err(k), GPMflag(k), inn_iter(k)] = inner_GPM(lambda_iter,data,GPMparam, FPparam);
        case 'mpc'
 %            [var_fp.x(:,k), err(k), GPMflag(k)] = inner_GPM(var_fp.lambda(:,k),data,GPMparam, FPparam);
-           [x_iter, err(k), GPMflag(k)] = inner_GPM(lambda_iter, data, GPMparam, FPparam);
+           [x_iter, err(k), GPMflag(k), inn_iter(k)] = inner_GPM(lambda_iter, data, GPMparam, FPparam);
        otherwise
            error('Error: Undefined solution method for the inner problem!')
    end
@@ -78,7 +79,7 @@ toc
 makeplot;
 
 %% Save results
-filename = 'WF_ws_eps1e-3_011718.mat';
+filename = 'WF_ws_eps1e-3_011723.mat';
 % save(filename, 'ALMparam', 'alpha', 'beta', 'gamma', 'C', 'data', ...
 %     'E', 'FPparam', 'Ki', 'Ko', 'P1', 'P2', 'var', 'prob_type');
 save(filename);  % For satefy
